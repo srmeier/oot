@@ -9033,6 +9033,8 @@ void Player_InitCommon(Player* this, GlobalContext* globalCtx, FlexSkeletonHeade
     Collider_SetQuad(globalCtx, &this->swordQuads[1], &this->actor, &D_80854650);
     Collider_InitQuad(globalCtx, &this->shieldQuad);
     Collider_SetQuad(globalCtx, &this->shieldQuad, &this->actor, &D_808546A0);
+
+    Actor_SetScale(&this->actor, 0.01f);
 }
 
 static void (*D_80854738[])(GlobalContext* globalCtx, Player* this) = {
