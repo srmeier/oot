@@ -1053,43 +1053,6 @@ void Gameplay_DrawOverlayElements(GlobalContext* globalCtx) {
     }
 }
 
-void MyMod_DrawDebugMsg(GlobalContext* globalCtx, const char* msg) {
-    GfxPrint printer;
-    Gfx* gfx;
-
-    // OPEN_DISPS/CLOSE_DISPS is a macro providing access to the POLY_OPA_DISP and OVERLAY_DISP macro
-    // (which would otherwise be equivalently accessed like `globalCtx->state.gfxCtx->polyOpa.p`/`...->overlay.p`)
-    // the point is to make debugging easier in case the game crashes (see Tharo's GBD)
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
-
-    // the dlist will be written in the opa buffer because that buffer is larger,
-    // but executed from the overlay buffer (overlay draws last, for example the hud is drawn to overlay)
-    gfx = POLY_OPA_DISP + 1;
-    gSPDisplayList(OVERLAY_DISP++, gfx);
-
-    // initialize GfxPrint struct
-    GfxPrint_Init(&printer);
-    GfxPrint_Open(&printer, gfx);
-
-    // set color to opaque pink
-    GfxPrint_SetColor(&printer, 255, 0, 255, 255);
-    // set position to somewhere near screen center
-    GfxPrint_SetPos(&printer, 1, 20);
-    // write Hello at previously set position with previously set color
-    GfxPrint_Printf(&printer, msg);
-
-    // end of text printing
-    gfx = GfxPrint_Close(&printer);
-    GfxPrint_Destroy(&printer);
-
-    gSPEndDisplayList(gfx++);
-    // make the opa dlist jump over the part that will be executed as part of overlay
-    gSPBranchList(POLY_OPA_DISP, gfx);
-    POLY_OPA_DISP = gfx;
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
-}
-
 void Gameplay_Draw(GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     Lights* sp228;

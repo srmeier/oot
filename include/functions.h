@@ -10,6 +10,8 @@ f32 sqrtf(f32 f);
 f64 sqrt(f64 d);
 #pragma intrinsic(sqrt)
 
+void MyMod_DrawDebugMsg(GlobalContext* globalCtx, const char* msg);
+
 void cleararena(void);
 void bootproc(void);
 void Main_ThreadEntry(void* arg);
